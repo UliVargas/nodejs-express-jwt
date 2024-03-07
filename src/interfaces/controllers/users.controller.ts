@@ -10,7 +10,7 @@ export default (dependencies: Dependencies): UsersRepository => {
   }
 
   const findOne = async (req: Request, res: Response): Promise<void> => {
-    res.status(200).json({})
+    res.status(200).json()
   }
 
   const create = async (req: Request, res: Response): Promise<void> => {

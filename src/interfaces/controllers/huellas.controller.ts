@@ -2,6 +2,9 @@ import { type Request, type Response } from 'express'
 import { type Dependencies } from '../../infrastructure/config/dependencies'
 import FindAllService from '../../application/use-cases/huellas/find-all.use-case'
 import FindOneService from '../../application/use-cases/huellas/find-one.use-case'
+import fs from 'node:fs'
+import { Buffer } from 'node:buffer'
+import jpeg from 'jpeg-js'
 
 export default (dependencies: Dependencies): {
   findAll: (req: Request, res: Response) => Promise<void>
@@ -16,21 +19,48 @@ export default (dependencies: Dependencies): {
   }
 
   const findOne = async (req: Request, res: Response): Promise<void> => {
-    const huella: any = await findOneService(req.params.id)
+    const resp: any = await findOneService(req.params.id)
 
-    if (huella === null) {
+    if (resp === null) {
       res.status(404).json({ message: 'Huella not found' })
       return
     }
 
-    const blob = huella.huella
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const buffer = Buffer.from(blob)
+    console.log({
+      width: resp.width,
+      height: resp.height,
+      size: resp.width * resp.height,
+      length: resp.huella.length
+    })
 
-    // Ajustar los headers según el tipo de archivo que estás enviando, por ejemplo, para una imagen PNG:
-    res.setHeader('Content-Type', 'image/jpg')
-    res.setHeader('Content-Disposition', 'attachment; filename="deditos.jpg"')
-    res.send(buffer)
+    const width = resp.width
+    const height = resp.height
+
+    // eslint-disable-next-line n/no-deprecated-api
+    const frameData = Buffer.alloc(resp.huella.length * 4)
+
+    let i = 0
+    let j = 0
+    while (i < frameData.length) {
+      frameData[i++] = resp.huella[j] // red
+      frameData[i++] = resp.huella[j] // green
+      frameData[i++] = resp.huella[j] // blue
+      frameData[i++] = resp.huella[j++] // alpha - ignored in JPEGs
+    }
+
+    const rawImageData = {
+      data: Buffer.from(frameData),
+      height,
+      width
+    }
+
+    const jpegImageData = jpeg.encode(rawImageData, 200)
+    console.log(jpegImageData)
+
+    fs.writeFileSync('image.jpg', jpegImageData.data)
+
+    res.setHeader('Content-Type', 'image/jpeg')
+    res.end(jpegImageData.data)
   }
 
   return {
