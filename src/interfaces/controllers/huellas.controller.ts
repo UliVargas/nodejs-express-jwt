@@ -26,17 +26,9 @@ export default (dependencies: Dependencies): {
       return
     }
 
-    console.log({
-      width: resp.width,
-      height: resp.height,
-      size: resp.width * resp.height,
-      length: resp.huella.length
-    })
-
     const width = resp.width
     const height = resp.height
 
-    // eslint-disable-next-line n/no-deprecated-api
     const frameData = Buffer.alloc(resp.huella.length * 4)
 
     let i = 0
@@ -55,7 +47,6 @@ export default (dependencies: Dependencies): {
     }
 
     const jpegImageData = jpeg.encode(rawImageData, 200)
-    console.log(jpegImageData)
 
     fs.writeFileSync('image.jpg', jpegImageData.data)
 
