@@ -4,7 +4,7 @@ import { type Request, type Response, type NextFunction } from 'express'
 import { validation } from '../../index.validation'
 import { createUserSchema } from '../../schemas/user.schema'
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     validation(req.body, createUserSchema)
     next()

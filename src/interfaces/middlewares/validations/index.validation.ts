@@ -1,4 +1,4 @@
 import { type ZodObject } from 'zod'
-export const validation = (inputs: unknown, schema: ZodObject<any, any>) => {
+export const validation = (inputs: unknown, schema: ZodObject<any, any>): any => {
   return schema.parse(inputs)
 }
