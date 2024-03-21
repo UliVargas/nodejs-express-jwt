@@ -1,15 +1,16 @@
-import sequelize from './config'
-import './models'
+/* eslint-disable no-console */
+import sequelize from "./config";
+import "./models";
 
 const alterDatabase = async (): Promise<void> => {
   try {
-    await sequelize.sync({ force: true })
-    console.log('Alterations completed successfully')
+    await sequelize.sync({ force: true });
+    console.log("Alterations completed successfully");
   } catch (error) {
-    console.error('Error occurred while performing alterations:', error)
+    console.error("Error occurred while performing alterations:", error);
   } finally {
-    await sequelize.close()
+    await sequelize.close();
   }
-}
+};
 
-void alterDatabase()
+void alterDatabase();

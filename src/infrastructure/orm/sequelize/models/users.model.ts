@@ -1,16 +1,16 @@
-import { Model, DataTypes, UUIDV4, type Optional } from 'sequelize'
-import sequelize from '../config'
-import { type UserEntity } from '../../../../core/entities/user.entity'
+import { Model, DataTypes, UUIDV4, type Optional } from "sequelize";
+import sequelize from "../config";
+import { type UserEntity } from "../../../../core/entities/user.entity";
 
-export class User extends Model<UserEntity, Optional<UserEntity, 'id'>> {
-  public id!: string
-  public name!: string
-  public email!: string
-  public password!: string
-  public createdAt?: Date
-  public updatedAt?: Date
+export class User extends Model<UserEntity, Optional<UserEntity, "id">> {
+  public id!: string;
+  public name!: string;
+  public email!: string;
+  public password!: string;
+  public createdAt?: Date;
+  public updatedAt?: Date;
 
-  public static readonly tableName = 'users'
+  public static readonly tableName = "users";
 }
 
 User.init(
@@ -18,25 +18,25 @@ User.init(
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
-      primaryKey: true
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
   {
     sequelize,
-    modelName: 'User',
-    tableName: User.tableName
-  }
-)
+    modelName: "User",
+    tableName: User.tableName,
+  },
+);

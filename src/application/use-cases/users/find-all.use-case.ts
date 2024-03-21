@@ -1,5 +1,5 @@
-import { type Dependencies } from '../../../infrastructure/config/dependencies'
+import { type Dependencies } from "../../../infrastructure/config/dependencies";
 
 export default (dependencies: Dependencies) => async () => {
-  return await dependencies.usersRepository.findAll()
-}
+  return await dependencies.usersRepository.findAll();
+};

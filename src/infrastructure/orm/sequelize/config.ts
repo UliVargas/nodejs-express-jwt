@@ -1,24 +1,27 @@
-import { Sequelize } from 'sequelize'
+/* eslint-disable no-console */
+import { Sequelize } from "sequelize";
+import { env } from "../../config/env";
 
 const connection = (): Sequelize => {
   const sequelize = new Sequelize({
-    dialect: 'postgres',
-    host: 'roundhouse.proxy.rlwy.net',
-    port: 29265,
-    username: 'postgres',
-    password: 'A6C2Dg512G35D2C141ADef1d6Dg-*bgA',
-    database: 'railway'
-  })
+    dialect: "postgres",
+    host: env.DB_HOST,
+    port: +env.DB_PORT,
+    username: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
+  });
 
-  sequelize.authenticate()
+  sequelize
+    .authenticate()
     .then(() => {
-      console.log('Connection has been established successfully.')
+      console.log("Connection has been established successfully.");
     })
-    .catch((err: any) => {
-      console.error('Unable to connect to the database:', err)
-    })
+    .catch((err: unknown) => {
+      console.error("Unable to connect to the database:", err);
+    });
 
-  return sequelize
-}
+  return sequelize;
+};
 
-export default connection()
+export default connection();
